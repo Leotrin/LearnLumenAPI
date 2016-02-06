@@ -1,0 +1,24 @@
+<?php namespace App\Http\Controllers;
+
+use App\Course;
+
+use Illuminate\Http\Request;
+
+class CourseController extends Controller {
+
+	public function __construct(){
+		$this->middleware('oauth', ['except'=>['show']]);
+	}
+	public function index(){
+		$courses = Course::all();
+		return $this->createSuccessResponse($courses, 200);
+	}
+	public function show($id){
+		$course = Course::find($id);
+		if($course){
+			return $this->createSuccessResponse($course, 200);
+		}
+
+		return $this->createErrorMessage("The course with id {$id}, does not exist!", 404);
+	}
+}
